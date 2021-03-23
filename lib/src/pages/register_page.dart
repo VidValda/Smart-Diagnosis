@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in_test/src/models/signInRegister.dart';
+import 'package:google_sign_in_test/src/services/email_service.dart';
+import 'package:google_sign_in_test/src/services/facebook_service.dart';
 import 'package:google_sign_in_test/src/services/google_service.dart';
 import 'package:google_sign_in_test/src/widgets/blue_button.dart';
 import 'package:google_sign_in_test/src/widgets/blue_header_1.dart';
@@ -180,33 +182,17 @@ class LoginRegisterButtons extends StatelessWidget {
   }
 
   void _login(BuildContext context) async {
-    UserCredential user;
     final signInModel =
         Provider.of<SignInRegisterModel>(context, listen: false);
     final formState = signInModel.formKey.currentState;
     if (formState.validate()) {
       formState.save();
-      try {
-        user = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: signInModel.email,
-          password: signInModel.password,
-        );
-
-        //TODO: Navegar a pantalla de inicio
-      } on FirebaseAuthException catch (e) {
-        String message;
-        if (e.code == 'user-not-found') {
-          message = 'No se encontró usuario.';
-        } else if (e.code == 'wrong-password') {
-          message = 'Contraseña incorrecta.';
-        }
-        final snackBar = SnackBar(content: Text(message));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      } catch (e) {
-        print(e);
-      }
+      await EmailService.signInWithEmail(
+        signInModel.email,
+        signInModel.password,
+        context,
+      );
     }
-    print(user);
   }
 
   void _register(BuildContext context) async {
@@ -215,32 +201,11 @@ class LoginRegisterButtons extends StatelessWidget {
     final formState = signInModel.formKey.currentState;
     if (formState.validate()) {
       formState.save();
-      try {
-        UserCredential user =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: signInModel.email,
-          password: signInModel.password,
-        );
-        // User currentUser = FirebaseAuth.instance.currentUser;
-        // if (!currentUser.emailVerified) {
-        //   await currentUser.sendEmailVerification();
-        // }
-        //TODO: Navegar a pantalla de inicio
-        // Navigator.pushReplacementNamed(context, "home");
-      } on FirebaseAuthException catch (e) {
-        String message;
-        if (e.code == 'weak-password') {
-          message = 'La contraseña es demasiado débil.';
-        } else if (e.code == 'email-already-in-use') {
-          message = 'Esta cuenta ya existe con este email.';
-        } else if (e.code == "user-not-found") {
-          message = "El usuartestio no se encontró";
-        }
-        final snackBar = SnackBar(content: Text(message));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      } catch (e) {
-        print(e);
-      }
+      await EmailService.registerWithEmail(
+        signInModel.email,
+        signInModel.password,
+        context,
+      );
     }
   }
 }
@@ -258,8 +223,9 @@ class SocialButtons extends StatelessWidget {
             size: 40,
             color: Color(0xFF3397FF),
           ),
-          // onPressed: () => facebookSignIn(),
-          onPressed: () {},
+          onPressed: () async {
+            await FaceBookService.signInwithFacebook();
+          },
         ),
         SizedBox(width: 30),
         IconButton(
@@ -269,7 +235,6 @@ class SocialButtons extends StatelessWidget {
             size: 40,
             color: Color(0xFF3397FF),
           ),
-          // onPressed: () {},
           onPressed: () async {
             await GoogleService.singInWithGoogle();
           },
@@ -277,39 +242,6 @@ class SocialButtons extends StatelessWidget {
       ],
     );
   }
-
-  // Future<UserCredential> googleSignIn() async {
-  //   try {
-  //     final GoogleSignInAccount googleUser =
-  //         await GoogleService.singInWithGoogle();
-
-  //     final GoogleSignInAuthentication googleAuth =
-  //         await googleUser.authentication;
-
-  //     final GoogleAuthCredential credential = GoogleAuthProvider.credential(
-  //       accessToken: googleAuth.accessToken,
-  //       idToken: googleAuth.idToken,
-  //     );
-
-  //     return await FirebaseAuth.instance.signInWithCredential(credential);
-  //   } catch (e) {
-  //     print(e);
-  //     return null;
-  //   }
-  // }
-
-  // Future<UserCredential> facebookSignIn() async {
-  //   try {
-  //     final AccessToken result = await FacebookAuth.instance.login();
-  //     final FacebookAuthCredential facebookAuthCredential =
-  //         FacebookAuthProvider.credential(result.token);
-  //     return await FirebaseAuth.instance
-  //         .signInWithCredential(facebookAuthCredential);
-  //   } catch (e) {
-  //     print(e);
-  //     return null;
-  //   }
-  // }
 }
 
 class BackgroundHeader extends StatelessWidget {

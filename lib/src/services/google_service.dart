@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleService {
@@ -7,28 +8,19 @@ class GoogleService {
     ],
   );
 
-  static Future<GoogleSignInAccount> singInWithGoogle() async {
+  static Future<UserCredential> singInWithGoogle() async {
     try {
       final account = await _googleSignIn.signIn();
       final googleKey = await account.authentication;
-      print(account);
-      print(googleKey.idToken);
 
-      // final signInWithGoogleEndpoint = Uri(
-      //   scheme: "https",
-      //   host: "google-apple-sign-in.herokuapp.com",
-      //   path: "/google",
-      // );
+      final GoogleAuthCredential googleAuthCredential =
+          GoogleAuthProvider.credential(
+        accessToken: googleKey.accessToken,
+        idToken: googleKey.idToken,
+      );
 
-      // final session = await http.post(
-      //   signInWithGoogleEndpoint,
-      //   body: {
-      //     "token": googleKey.idToken,
-      //   },
-      // );
-      // session.body;
-
-      return account;
+      return await FirebaseAuth.instance
+          .signInWithCredential(googleAuthCredential);
     } catch (e) {
       print(e);
       return null;
