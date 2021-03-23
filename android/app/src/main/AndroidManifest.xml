@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.vidvalda.authappflutter">
+    package="com.vidvalda.diagnostico">
    <application
         android:label="google_sign_in_test"
         android:icon="@mipmap/ic_launcher">

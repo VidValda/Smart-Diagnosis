@@ -1,4 +1,4 @@
-package com.vidvalda.authappflutter
+package com.vidvalda.diagnostico
 
 import io.flutter.embedding.android.FlutterActivity
 

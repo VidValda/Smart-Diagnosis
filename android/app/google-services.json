@@ -1,62 +1,41 @@
 {
   "project_info": {
-    "project_number": "820222387701",
-    "project_id": "med-app-diagnosis",
-    "storage_bucket": "med-app-diagnosis.appspot.com"
+    "project_number": "904194119132",
+    "project_id": "diagnostico-inteligente",
+    "storage_bucket": "diagnostico-inteligente.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:820222387701:android:5982baf4ae0ce31fececbc",
+        "mobilesdk_app_id": "1:904194119132:android:de9e354c0121099747eb19",
         "android_client_info": {
-          "package_name": "com.vidvalda.authappflutter"
+          "package_name": "com.vidvalda.diagnostico"
         }
       },
       "oauth_client": [
         {
-          "client_id": "820222387701-e36b0v97db5lcg995mto4ltaupq8o07r.apps.googleusercontent.com",
+          "client_id": "904194119132-1v50suonirm38lnglecgei2qhj964gb2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vidvalda.diagnostico",
+            "certificate_hash": "ef299615937eec352b367008da178192a8db3676"
+          }
+        },
+        {
+          "client_id": "904194119132-84m7q6n1q6l03i34g2gqp1dilf57hfpo.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC2izfwvVScOQE3zG3gn-BFzIT7ZtyJpdo"
+          "current_key": "AIzaSyDwQMAfM4Mp0nstjXUa_h7wmbUB-k2F8-M"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "820222387701-e36b0v97db5lcg995mto4ltaupq8o07r.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:820222387701:android:cddc557b7524a464ececbc",
-        "android_client_info": {
-          "package_name": "com.vidvalda.med_diagnosis_app"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "820222387701-e36b0v97db5lcg995mto4ltaupq8o07r.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyC2izfwvVScOQE3zG3gn-BFzIT7ZtyJpdo"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "820222387701-e36b0v97db5lcg995mto4ltaupq8o07r.apps.googleusercontent.com",
+              "client_id": "904194119132-84m7q6n1q6l03i34g2gqp1dilf57hfpo.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
