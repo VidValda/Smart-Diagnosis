@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_sign_in_test/src/models/userModel.dart';
+import 'package:provider/provider.dart';
 
 class GoogleService {
   static GoogleSignIn _googleSignIn = GoogleSignIn(
@@ -8,7 +11,8 @@ class GoogleService {
     ],
   );
 
-  static Future<UserCredential> singInWithGoogle() async {
+  static Future<UserCredential> singInWithGoogle(BuildContext context) async {
+    final userModel = Provider.of<UserModel>(context);
     try {
       final account = await _googleSignIn.signIn();
       final googleKey = await account.authentication;
@@ -19,8 +23,11 @@ class GoogleService {
         idToken: googleKey.idToken,
       );
 
-      return await FirebaseAuth.instance
+      final userCredential = await FirebaseAuth.instance
           .signInWithCredential(googleAuthCredential);
+      userModel.user = userCredential;
+      Navigator.pushReplacementNamed(context, "map");
+      return userCredential;
     } catch (e) {
       print(e);
       return null;

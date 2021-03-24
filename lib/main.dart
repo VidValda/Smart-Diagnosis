@@ -2,7 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_sign_in_test/src/models/mapModel.dart';
+import 'package:google_sign_in_test/src/models/searchModel.dart';
 import 'package:google_sign_in_test/src/models/signInRegister.dart';
+import 'package:google_sign_in_test/src/models/ubicationModel.dart';
+import 'package:google_sign_in_test/src/models/userModel.dart';
 import 'package:google_sign_in_test/src/routes/routes.dart';
 import 'package:google_sign_in_test/src/theme/theme.dart';
 import 'package:provider/provider.dart';
@@ -31,14 +35,16 @@ class MyApp extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           return MultiProvider(
             providers: [
-              ChangeNotifierProvider(
-                create: (_) => SignInRegisterModel(),
-              ),
+              ChangeNotifierProvider(create: (_) => SignInRegisterModel()),
+              ChangeNotifierProvider(create: (_) => UserModel()),
+              ChangeNotifierProvider(create: (_) => MapModel()),
+              ChangeNotifierProvider(create: (_) => SearchModel()),
+              ChangeNotifierProvider(create: (_) => UbicationModel()),
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
               title: 'Material App',
-              initialRoute: "register",
+              initialRoute: "loading",
               routes: getRoutes(),
               theme: getTheme(),
             ),

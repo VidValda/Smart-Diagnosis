@@ -10,11 +10,10 @@ import 'package:google_sign_in_test/src/services/google_service.dart';
 import 'package:google_sign_in_test/src/widgets/blue_button.dart';
 import 'package:google_sign_in_test/src/widgets/blue_header_1.dart';
 
-class RegisterPage extends StatelessWidget {
+class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Color(0xFF3397FF),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Stack(
@@ -23,6 +22,7 @@ class RegisterPage extends StatelessWidget {
               FormDetails(),
             ],
           ),
+          physics: NeverScrollableScrollPhysics(),
         ),
       ),
     );
@@ -93,33 +93,6 @@ class TextFields extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 60),
-          Text(
-            "Nombre",
-            style: Theme.of(context)
-                .textTheme
-                .bodyText2
-                .copyWith(fontWeight: FontWeight.bold),
-          ),
-          TextFormField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              hintText: "Ingrese nombre de usuario",
-            ),
-            keyboardType: TextInputType.visiblePassword,
-            obscureText: true,
-            validator: (value) {
-              if (value.isEmpty) {
-                return "Ingrese un nombre";
-              }
-              return null;
-            },
-            onSaved: (newValue) {
-              signInModel.name = newValue;
-            },
-          ),
-          SizedBox(height: 30),
           Text(
             "Correo",
             style: Theme.of(context)
@@ -194,25 +167,31 @@ class LoginRegisterButtons extends StatelessWidget {
       children: [
         SizedBox(height: 18),
         Hero(
-          child: BlueButton(
-            "Regístrate",
-            invert: true,
-            onPressed: () => _register(context),
-          ),
-          tag: "boton",
-        ),
+            child: BlueButton(
+              "Iniciar sesión",
+              onPressed: () => _login(context),
+            ),
+            tag: "boton"),
         SizedBox(height: 6),
+        BlueButton(
+          "Regístrate",
+          invert: true,
+          onPressed: () {
+            Navigator.pushNamed(context, "register");
+            //_register(context);
+          },
+        ),
       ],
     );
   }
 
-  void _register(BuildContext context) async {
+  void _login(BuildContext context) async {
     final signInModel =
         Provider.of<SignInRegisterModel>(context, listen: false);
     final formState = signInModel.formKey.currentState;
     if (formState.validate()) {
       formState.save();
-      final user = await EmailService.registerWithEmail(
+      final user = await EmailService.signInWithEmail(
         signInModel.email,
         signInModel.password,
         context,
@@ -220,7 +199,7 @@ class LoginRegisterButtons extends StatelessWidget {
       if (user != null) {
         Navigator.pushReplacementNamed(context, "map");
       } else {
-        crearAlerta("No se pudo registrar, intente mas tarde", context);
+        crearAlerta("Algo malo sucedió, intente de nuevo", context);
       }
     }
   }

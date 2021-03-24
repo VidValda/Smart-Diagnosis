@@ -61,7 +61,7 @@ class Details extends StatelessWidget {
               child: BlueButton(
                 "¡Empecemos!",
                 onPressed: () {
-                  Navigator.of(context).pushNamed("register");
+                  Navigator.of(context).pushNamed("login");
                 },
               ),
               tag: "boton"),

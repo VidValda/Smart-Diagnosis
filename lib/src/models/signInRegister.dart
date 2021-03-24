@@ -6,6 +6,13 @@ class SignInRegisterModel with ChangeNotifier {
   GlobalKey<FormState> _formKey;
   String _email;
   String _password;
+  String _name;
+
+  String get name => this._name;
+
+  set name(String name) {
+    _name = name;
+  }
 
   bool get isValidEmail => this._isValidEmail;
 
