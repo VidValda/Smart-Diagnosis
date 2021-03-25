@@ -43,9 +43,9 @@ class SearchBar extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: Row(
             children: [
-              Icon(
-                Icons.healing_rounded,
-                color: Color(0xFF3397FF),
+              Container(
+                child: Image.asset("assets/estetoscopio.png"),
+                padding: EdgeInsets.symmetric(horizontal: 10),
               ),
               Text("Busca médicos especialistas",
                   style: TextStyle(color: Colors.black87)),

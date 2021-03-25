@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_sign_in_test/src/helpers/widgets_to_marker.dart';
+import 'package:google_sign_in_test/src/services/google_map_service.dart';
+import 'package:google_sign_in_test/src/sharedPreferences/savePreferences.dart';
 import 'package:google_sign_in_test/src/theme/uber_map_theme.dart';
 
 class MapModel with ChangeNotifier {
@@ -47,11 +49,15 @@ class MapModel with ChangeNotifier {
       _mapController = controller;
       _mapController.setMapStyle(jsonEncode(uberMapTheme));
       mapaReady = true;
+      await GoogleMapService().getNearbyHospitals(_currentPosition);
+      buildHospitalsMarkers();
+
       notifyListeners();
     }
   }
 
   void locationUpdate(LatLng latLng) {
+    _currentPosition = latLng;
     if (seguirUbicacion) {
       moverCamara(latLng);
     }
@@ -98,6 +104,28 @@ class MapModel with ChangeNotifier {
     polylines = currentPolylines;
     markers = newMarkers;
 
+    notifyListeners();
+  }
+
+  void buildHospitalsMarkers() async {
+    final icon = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(size: Size(15, 15)),
+      "assets/doctor.png",
+    );
+    final response = await SavePreferences().loadNearbyPlaces();
+    markers = Map<String, Marker>.fromIterable(
+      response.results,
+      key: (element) => element.placeId,
+      value: (element) => Marker(
+        markerId: MarkerId(element.placeId),
+        position: LatLng(
+          element.geometry.location.lat,
+          element.geometry.location.lng,
+        ),
+        icon: icon,
+        anchor: Offset(0.5, 1.0),
+      ),
+    );
     notifyListeners();
   }
 }
